@@ -6,8 +6,14 @@ import com.example.project2_login.model.ForgotPasswordRequest;
 import com.example.project2_login.model.ForgotPasswordResponse;
 import com.example.project2_login.model.RegisterRequest;
 import com.example.project2_login.model.RegisterResponse;
+import com.example.project2_login.model.Event;
+import com.example.project2_login.model.EventResponse;
+import com.example.project2_login.model.EventRequest;
+
+import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.GET;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
@@ -21,4 +27,25 @@ public interface AuthApi {
 
     @POST("/auth/forgot-password")
     Call<ForgotPasswordResponse> forgotPassword(@Body ForgotPasswordRequest forgotPasswordRequest);
+
+    // Retrieve all events
+    @GET("/events")
+    Call<List<Event>> getAllEvents();
+
+    // Create a new event
+    @POST("/events")
+    Call<EventResponse> createEvent(@Body EventRequest eventRequest);
+
+    // Add a comment
+//    @POST("/comments")
+//    Call<CommentResponse> addComment(
+//            @Header("Authorization") String token,
+//            @Body CommentRequest commentRequest
+//    );
+//
+//    // Retrieve comments for an event
+//    @GET("/comments")
+//    Call<List<Comment>> getComments(
+//            @Query("event_id") String eventId
+//    );
 }
