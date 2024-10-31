@@ -1,4 +1,4 @@
-package com.example.project2_login.model.;
+package com.example.project2_login.model;
 
 public class EventResponse {
     private String event_id;

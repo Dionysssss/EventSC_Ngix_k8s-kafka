@@ -1,5 +1,8 @@
 package com.example.project2_login;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +15,9 @@ import com.example.project2_login.model.AuthRequest;
 import com.example.project2_login.model.AuthResponse;
 import com.example.project2_login.model.RegisterRequest;
 import com.example.project2_login.model.RegisterResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -71,32 +77,37 @@ public class LoginView extends AppCompatActivity {
                     // Success response (200 OK)
                     Toast.makeText(LoginView.this, "Login successful", Toast.LENGTH_SHORT).show();
                     // Navigate to the next screen or handle login success as needed
+                    String userId = response.body().getUserId();
+                    Intent intent = new Intent(LoginView.this, MapViewActivity.class);
+                    intent.putExtra("userId", userId); // Pass user ID
+                    startActivity(intent);
+
                 } else {
-//                    try {
-//                        // Handle error cases
-//                        if (response.errorBody() != null) {
-//                            String errorBody = response.errorBody().string();
-//                            JSONObject errorJson = new JSONObject(errorBody);
-//
-//                            if (response.code() == 401) {
-//                                // Incorrect username or password
-//                                String errorMessage = errorJson.getJSONObject("error").getString("message");
-//                                Toast.makeText(LoginView.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                            } else if (response.code() == 400) {
-//                                // Missing or invalid fields
-//                                String errorMessage = errorJson.getJSONObject("error").getString("message");
-//                                Toast.makeText(LoginView.this, errorMessage, Toast.LENGTH_SHORT).show();
-//                            } else {
-//                                // Generic error for other cases
-//                                Toast.makeText(LoginView.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
+                    try {
+                        // Handle error cases
+                        if (response.errorBody() != null) {
+                            String errorBody = response.errorBody().string();
+                            JSONObject errorJson = new JSONObject(errorBody);
+
+                            if (response.code() == 401) {
+                                // Incorrect username or password
+                                String errorMessage = errorJson.getJSONObject("error").getString("message");
+                                Toast.makeText(LoginView.this, errorMessage, Toast.LENGTH_SHORT).show();
+                            } else if (response.code() == 400) {
+                                // Missing or invalid fields
+                                String errorMessage = errorJson.getJSONObject("error").getString("message");
+                                Toast.makeText(LoginView.this, errorMessage, Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Generic error for other cases
+                                Toast.makeText(LoginView.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
                     Toast.makeText(LoginView.this, "Login failed. Unknown error.", Toast.LENGTH_SHORT).show();
-//                        }
-//                    } catch (IOException | JSONException e) {
-//                        e.printStackTrace();
-//                        Toast.makeText(LoginView.this, "Error processing login response.", Toast.LENGTH_SHORT).show();
-//                    }
+                        }
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(LoginView.this, "Error processing login response.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
