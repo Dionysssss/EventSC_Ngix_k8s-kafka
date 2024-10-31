@@ -7,6 +7,7 @@ public class User {
     private String email;
     private String password;
     private boolean isAuthenticated;
+    private String magicLinkToken;
 
     // Default constructor
     public User() {}
@@ -58,6 +59,14 @@ public class User {
 
     public void setAuthenticated(boolean isAuthenticated) {
         this.isAuthenticated = isAuthenticated;
+    }
+
+    public String getMagicLinkToken() {
+        return magicLinkToken;
+    }
+
+    public void setMagicLinkToken(String magicLinkToken) {
+        this.magicLinkToken = magicLinkToken;
     }
 
     @Override

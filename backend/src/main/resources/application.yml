@@ -3,7 +3,19 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql:///event_sc?useSSL=false
     username: root
-    password: Wjz166605
+    password: myr021108-
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: abbccdef3@gmail.com
+    password: csci310fall24
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

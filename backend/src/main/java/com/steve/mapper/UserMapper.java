@@ -17,4 +17,9 @@ public interface UserMapper {
     User findUserByEmail(String email);
 
     // Additional database interaction methods can be added here
+    @Select("SELECT * FROM User WHERE magicLinkToken = #{token}")
+    User findByMagicLinkToken(String token);
+
+    @Update("UPDATE User SET magic_link_token = #{token} WHERE email = #{email}")
+    void updateUserToken(@Param("email") String email, @Param("token") String token);
 }
