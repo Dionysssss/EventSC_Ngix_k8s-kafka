@@ -21,33 +21,37 @@ public class MagicLinkService {
         this.userMapper = userMapper;
     }
 
-    public void sendMagicLink(String email) {
+    public void sendMagicLink(String email) throws Exception {
         User user = userMapper.findUserByEmail(email);
-
         if (user == null) {
-            throw new RuntimeException("User not found");
+            throw new Exception("User not found");
         }
 
-        String token = generateToken(user); // Generate a unique token, e.g., UUID
-        String link = baseUrl + "/verify?token=" + token;
-
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("Your Magic Login Link");
-        message.setText("Click the link below to log in:\n" + link);
-
-        mailSender.send(message);
-
+        // Generate a unique token for the magic link
+        String token = UUID.randomUUID().toString();
         user.setMagicLinkToken(token);
-        userMapper.updateUserToken(email, token);
+        userMapper.insertUser(user); // Save token to user in the database
+
+        // Construct the magic link
+        String magicLinkUrl = baseUrl + "/auth/verify-magic-link?token=" + token;
+
+        // Send email with magic link
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(email);
+        mailMessage.setSubject("Your Magic Link");
+        mailMessage.setText("Click the link to log in: " + magicLinkUrl);
+        mailSender.send(mailMessage);
     }
 
-    public User verifyToken(String token) {
+    public User verifyToken(String token) throws Exception {
         User user = userMapper.findByMagicLinkToken(token);
-
-        if (user == null) {
-            throw new RuntimeException("Invalid or expired token");
+        if (user == null || !token.equals(user.getMagicLinkToken())) {
+            throw new Exception("Invalid or expired token");
         }
+
+        user.setAuthenticated(true);
+        user.setMagicLinkToken(null); // Clear token after verification
+        userMapper.insertUser(user); // Save authentication status
 
         return user;
     }

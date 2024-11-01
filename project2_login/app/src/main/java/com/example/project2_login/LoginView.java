@@ -107,9 +107,15 @@ public class LoginView extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     // Success response (200 OK)
                     Toast.makeText(LoginView.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    // Navigate to the next screen or handle login success as needed
+//                    // Navigate to the next screen or handle login success as needed
+//                    Long userId = response.body().getUserId();
+//                    Intent intent = new Intent(LoginView.this, MapViewActivity.class);
+//                    intent.putExtra("userId", userId); // Pass user ID
+//                    startActivity(intent);
+
+                    // Navigate to EventView instead of MapViewActivity
                     Long userId = response.body().getUserId();
-                    Intent intent = new Intent(LoginView.this, MapViewActivity.class);
+                    Intent intent = new Intent(LoginView.this, EventList.class);
                     intent.putExtra("userId", userId); // Pass user ID
                     startActivity(intent);
 

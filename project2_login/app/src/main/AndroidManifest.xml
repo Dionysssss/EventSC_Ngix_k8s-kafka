@@ -38,6 +38,8 @@
         <!-- CreateEventActivity for entering event details -->
         <activity android:name=".CreateEventActivity" />
 
+        <activity android:name=".EventList" />
+
     </application>
 
 </manifest>

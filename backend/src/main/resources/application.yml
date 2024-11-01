@@ -21,3 +21,7 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     map-underscore-to-camel-case: true
+
+app:
+  magic-link:
+    base-url: http://10.0.2.2:8080
