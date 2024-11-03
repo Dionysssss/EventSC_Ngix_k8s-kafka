@@ -35,11 +35,11 @@ public class EventAdapter extends ArrayAdapter<Event> {
         TextView tvEventCreator = convertView.findViewById(R.id.tvEventCreator);
 
         // Populate the data into the template view using the event object
-        tvEventName.setText(event.getName());
-        tvEventLocation.setText("Location: " + event.getLocation());
-        tvEventTime.setText("Time: " + event.getTime());
-        tvEventDescription.setText("Description: " + event.getDescription());
-        tvEventCreator.setText("Creator: " + event.getCreator());
+        tvEventName.setText(event.getEventName());
+        tvEventLocation.setText("Location: " + event.getEventLocation());
+        tvEventTime.setText("Time: " + event.getEventTime());
+        tvEventDescription.setText("Description: " + event.getEventDescription());
+        tvEventCreator.setText("Creator: " + event.getEventId());
 
         // Return the completed view to render on screen
         return convertView;

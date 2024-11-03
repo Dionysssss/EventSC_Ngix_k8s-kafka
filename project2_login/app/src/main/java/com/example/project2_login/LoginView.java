@@ -2,7 +2,6 @@ package com.example.project2_login;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -14,10 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.project2_login.model.AuthRequest;
 import com.example.project2_login.model.AuthResponse;
-import com.example.project2_login.model.ForgotPasswordRequest;
-import com.example.project2_login.model.ForgotPasswordResponse;
-import com.example.project2_login.model.MagicLinkRequest;
-import com.example.project2_login.model.MagicLinkResponse;
 import com.example.project2_login.model.RegisterRequest;
 import com.example.project2_login.model.RegisterResponse;
 
@@ -36,7 +31,6 @@ public class LoginView extends AppCompatActivity {
     private EditText passwordField;
     private Button loginButton;
     private Button registerButton;
-    private Button forgotPasswordButton;
     private AuthApi authApi;
 
     @Override
@@ -48,7 +42,6 @@ public class LoginView extends AppCompatActivity {
         passwordField = findViewById(R.id.password);
         loginButton = findViewById(R.id.login_button);
         registerButton = findViewById(R.id.register_button);
-        forgotPasswordButton = findViewById(R.id.forgot_password_button);
         authApi = ApiClient.getAuthApi();
 
         loginButton.setOnClickListener(v -> {
@@ -73,30 +66,6 @@ public class LoginView extends AppCompatActivity {
                 Toast.makeText(LoginView.this, "Please fill out all fields", Toast.LENGTH_SHORT).show();
             }
         });
-
-        forgotPasswordButton.setOnClickListener(v -> {
-            String email = emailField.getText().toString().trim();
-            if (!email.isEmpty()) {
-                MagicLinkRequest request = new MagicLinkRequest(email);
-                ApiClient.getAuthApi().sendMagicLink(request).enqueue(new Callback<MagicLinkResponse>() {
-                    @Override
-                    public void onResponse(Call<MagicLinkResponse> call, Response<MagicLinkResponse> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(LoginView.this, "Magic link sent to your email!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(LoginView.this, "Failed to send magic link: " + response.message(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<MagicLinkResponse> call, Throwable t) {
-                        Toast.makeText(LoginView.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                Toast.makeText(LoginView.this, "Please enter your email", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void loginUser(String email, String password) {
@@ -107,16 +76,10 @@ public class LoginView extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     // Success response (200 OK)
                     Toast.makeText(LoginView.this, "Login successful", Toast.LENGTH_SHORT).show();
-//                    // Navigate to the next screen or handle login success as needed
-//                    Long userId = response.body().getUserId();
-//                    Intent intent = new Intent(LoginView.this, MapViewActivity.class);
-//                    intent.putExtra("userId", userId); // Pass user ID
-//                    startActivity(intent);
-
-                    // Navigate to EventView instead of MapViewActivity
-                    Long userId = response.body().getUserId();
-                    Intent intent = new Intent(LoginView.this, EventList.class);
-                    intent.putExtra("userId", userId); // Pass user ID
+                    // Navigate to the next screen or handle login success as needed
+                    String userId = response.body().getUserId();
+                    Intent intent = new Intent(LoginView.this, MapViewActivity.class);
+                    intent.putExtra("userId", Integer.parseInt(userId)); // pass userId
                     startActivity(intent);
 
                 } else {
@@ -183,25 +146,6 @@ public class LoginView extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RegisterResponse> call, Throwable t) {
-                Toast.makeText(LoginView.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void sendMagicLink(String email) {
-        MagicLinkRequest request = new MagicLinkRequest(email); // Create MagicLinkRequest object
-        ApiClient.getAuthApi().sendMagicLink(request).enqueue(new Callback<MagicLinkResponse>() {
-            @Override
-            public void onResponse(Call<MagicLinkResponse> call, Response<MagicLinkResponse> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(LoginView.this, "Magic link sent to your email!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LoginView.this, "Failed to send magic link: " + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MagicLinkResponse> call, Throwable t) {
                 Toast.makeText(LoginView.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

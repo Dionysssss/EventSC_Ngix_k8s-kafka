@@ -4,10 +4,7 @@ import com.steve.entity.User;
 import com.steve.service.MagicLinkService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,9 +17,9 @@ public class MagicLinkController {
     }
 
     @PostMapping("/send-magic-link")
-    public ResponseEntity<String> sendMagicLink(@RequestParam String email) {
+    public ResponseEntity<String> sendMagicLink(@RequestBody User user) {
         try {
-            magicLinkService.sendMagicLink(email);
+            magicLinkService.sendMagicLink(user.getEmail());
             return ResponseEntity.ok("Magic link sent successfully.");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send magic link: " + e.getMessage());

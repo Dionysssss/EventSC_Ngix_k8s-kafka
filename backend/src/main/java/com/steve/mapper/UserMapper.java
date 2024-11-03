@@ -22,4 +22,5 @@ public interface UserMapper {
 
     @Update("UPDATE User SET magic_link_token = #{token} WHERE email = #{email}")
     void updateUserToken(@Param("email") String email, @Param("token") String token);
+
 }

@@ -27,15 +27,13 @@ public class MagicLinkService {
             throw new Exception("User not found");
         }
 
-        // Generate a unique token for the magic link
+        // Generate a unique token and save to user
         String token = UUID.randomUUID().toString();
         user.setMagicLinkToken(token);
-        userMapper.insertUser(user); // Save token to user in the database
+        userMapper.updateUserToken(email, token); // Save token to the database
 
-        // Construct the magic link
+        // Construct and send the magic link
         String magicLinkUrl = baseUrl + "/auth/verify-magic-link?token=" + token;
-
-        // Send email with magic link
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(email);
         mailMessage.setSubject("Your Magic Link");

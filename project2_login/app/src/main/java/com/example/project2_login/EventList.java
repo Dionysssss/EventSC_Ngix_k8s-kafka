@@ -32,27 +32,26 @@ public class EventList extends AppCompatActivity {
         lvEvents.setAdapter(adapter);
 
         // Fetch all events when the activity starts
-        fetchAllEvents();
+//        fetchAllEvents();
     }
 
-    private void fetchAllEvents() {
-        ApiClient.getAuthApi().getAllEvents().enqueue(new Callback<List<Event>>() {
-            @Override
-            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    eventList.addAll(response.body());
-                    adapter.notifyDataSetChanged(); // Refresh the ListView with new data
-                } else {
-                    Toast.makeText(EventList.this, "Failed to retrieve events", Toast.LENGTH_SHORT).show();
-                    Log.e("EventView", "Response Error: " + response.errorBody());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Event>> call, Throwable t) {
-                Toast.makeText(EventList.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e("EventView", "Fetch failed", t);
-            }
-        });
-    }
+//    private void fetchAllEvents() {
+//        ApiClient.getAuthApi().getAllEvents().enqueue(new Callback<List<Event>>() {
+//            @Override
+//            public void onResponse(Call<List<Event>> call, Response<List<Event>> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    eventList.addAll(response.body());
+//                } else {
+//                    Toast.makeText(EventList.this, "Failed to retrieve events", Toast.LENGTH_SHORT).show();
+//                    Log.e("EventView", "Response Error: " + response.errorBody());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<Event>> call, Throwable t) {
+//                Toast.makeText(EventList.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                Log.e("EventView", "Fetch failed", t);
+//            }
+//        });
+//    }
 }
