@@ -57,9 +57,9 @@ public class LoginView extends AppCompatActivity {
                     public void onResponse(Call<MagicLinkResponse> call, Response<MagicLinkResponse> response) {
                         if (response.isSuccessful()) {
                             Toast.makeText(LoginView.this, "Verification code sent to your email!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginView.this, VerifyMagicLinkActivity.class);
-                            intent.putExtra("email", email);
-                            startActivity(intent);
+//                            Intent intent = new Intent(LoginView.this, VerifyMagicLinkActivity.class);
+//                            intent.putExtra("email", email);
+//                            startActivity(intent);
                         } else {
                             Toast.makeText(LoginView.this, "Failed to send verification code", Toast.LENGTH_SHORT).show();
                         }
