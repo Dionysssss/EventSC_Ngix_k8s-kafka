@@ -54,6 +54,7 @@ public class EventDetailsActivity extends AppCompatActivity {
     private Button postCommentButton;
     private Button thumbsUpButton;
     private Button thumbsDownButton;
+    private Button getDirectionsButton;
 
     private boolean isConfirmed;
     private boolean hasReportedAsFalse = false;
@@ -92,6 +93,7 @@ public class EventDetailsActivity extends AppCompatActivity {
         editEventButton = findViewById(R.id.edit_event_button);
         backToMapButton = findViewById(R.id.back_to_map_button);
         postCommentButton = findViewById(R.id.post_comment_button);
+        getDirectionsButton = findViewById(R.id.directions_button);
 
         // Load event details and validation counts
         fetchEventDetails();
@@ -114,6 +116,9 @@ public class EventDetailsActivity extends AppCompatActivity {
         // Set up click listeners for confirmation
         thumbsUpButton.setOnClickListener(v -> handleThumbsUpClick());
         thumbsDownButton.setOnClickListener(v -> handleThumbsDownClick());
+
+        // Set up the Get Directions button listener
+        getDirectionsButton.setOnClickListener(v -> openGoogleMapsForDirections());
     }
 
     private void displayEventDetails(Event event) {
@@ -449,4 +454,32 @@ public class EventDetailsActivity extends AppCompatActivity {
             Toast.makeText(this, "Cannot report as false as you have confirmed this event", Toast.LENGTH_SHORT).show();
         }
     }
+
+    private void openGoogleMapsForDirections() {
+        if (currentEvent != null && currentEvent.getEventLocation() != null) {
+            double destinationLatitude = currentEvent.getEventLocation().getLatitude();
+            double destinationLongitude = currentEvent.getEventLocation().getLongitude();
+
+            // Fixed starting location
+            double startLatitude = 34.019437;
+            double startLongitude = -118.289525;
+
+            // Create URI with fixed starting location
+            String uri = "http://maps.google.com/maps?saddr=" + startLatitude + "," + startLongitude
+                    + "&daddr=" + destinationLatitude + "," + destinationLongitude;
+
+            Intent intent = new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(uri));
+            intent.setPackage("com.google.android.apps.maps");
+
+            // Check if an app can handle this intent
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            } else {
+                Toast.makeText(this, "Google Maps is not installed", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Event location is not available", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

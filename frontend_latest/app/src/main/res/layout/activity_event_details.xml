@@ -100,6 +100,14 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
+        android:id="@+id/directions_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Directions"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"/>
+
+    <Button
         android:id="@+id/back_to_map_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
