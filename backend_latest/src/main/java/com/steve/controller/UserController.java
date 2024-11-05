@@ -38,7 +38,7 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {
         try {
             int userId = userService.registerUser(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new RegistrationResponse("Registration successful", String.valueOf(userId)));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new RegistrationResponse(String.valueOf(userId), "Registration successful"));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(409, e.getMessage()));
         } catch (Exception e) {

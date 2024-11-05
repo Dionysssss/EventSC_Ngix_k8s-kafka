@@ -22,6 +22,7 @@ CREATE TABLE Event (
     eventTime TIME,
     eventCreator_id INT,
     FOREIGN KEY (eventCreator_id) REFERENCES User(user_id) ON DELETE SET NULL
+   
 );
 
 -- Comment table
@@ -35,6 +36,18 @@ CREATE TABLE Comment (
     FOREIGN KEY (event_id) REFERENCES Event(event_id) ON DELETE CASCADE
 );
 
+-- Validation Event Table
+CREATE TABLE Validation (
+    validation_id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT NOT NULL,
+    user_id INT NOT NULL,
+    is_confirmed BOOLEAN NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES Event(event_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE,
+    UNIQUE (event_id, user_id)
+);
+
 CREATE TABLE VerificationToken (
     id SERIAL PRIMARY KEY,
     token VARCHAR(255) NOT NULL,
@@ -43,10 +56,10 @@ CREATE TABLE VerificationToken (
     expiration TIMESTAMP
 );
 
--- CREATE TABLE SecurityQuestion (
---     id SERIAL PRIMARY KEY,
---     user_id INT,
---     question VARCHAR(255) NOT NULL,
---     answer VARCHAR(255) NOT NULL,
---     FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
--- );
+-- Security Answer Table
+CREATE TABLE SecurityAnswer (
+    answer_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    answer VARCHAR(255) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES User(user_id) ON DELETE CASCADE
+);
