@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Event Details Section -->
+    <EditText
+        android:id="@+id/event_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Event Name"
+        android:enabled="false" />
+
+    <EditText
+        android:id="@+id/event_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:text="Location: "
+        android:enabled="false" />
+
+    <EditText
+        android:id="@+id/event_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:text="Time: "
+        android:enabled="false" />
+
+    <EditText
+        android:id="@+id/event_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:text="Description: "
+        android:enabled="false" />
+
+    <EditText
+        android:id="@+id/event_creator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp"
+        android:text="Creator ID: "
+        android:enabled="false" />
+
+    <!-- Thumbs Up and Down Buttons with Counts in a Single Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
+
+        <Button
+            android:id="@+id/thumbs_up_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thumbs Up" />
+
+        <TextView
+            android:id="@+id/thumbs_up_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="24dp"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/thumbs_down_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thumbs Down" />
+
+        <TextView
+            android:id="@+id/thumbs_down_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- Buttons for Edit and Back to Map -->
+    <Button
+        android:id="@+id/edit_event_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Edit Event"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:id="@+id/back_to_map_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Back to Map"
+        android:layout_gravity="center_horizontal" />
+
+    <!-- Comment Section -->
+
+    <TextView
+        android:id="@+id/comments_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Comments"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"
+        android:paddingBottom="4dp" />
+
+    <ListView
+        android:id="@+id/comments_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="16dp"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+
+    <EditText
+        android:id="@+id/new_comment_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Write a comment..." />
+
+    <Button
+        android:id="@+id/post_comment_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Post Comment"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>
