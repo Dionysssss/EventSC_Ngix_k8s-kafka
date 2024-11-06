@@ -124,23 +124,41 @@ public class MagicLinkService {
         return true;
     }
 
+//    public static Map<String, String> convertStringToMap(String input) {
+//        Map<String, String> map = new HashMap<>();
+//
+//        try {
+//            // Parse the input string as JSON
+//            JSONObject jsonObject = new JSONObject(input);
+//            Iterator<String> keys = jsonObject.keys();
+//
+//            // Populate the map with keys and values from the JSON object
+//            while (keys.hasNext()) {
+//                String key = keys.next();
+//                map.put(key, jsonObject.getString(key));
+//            }
+//        } catch (Exception e) {
+//            System.err.println("Failed to parse input string: " + e.getMessage());
+//        }
+//
+//        return map;
+//    }
+
     public static Map<String, String> convertStringToMap(String input) {
         Map<String, String> map = new HashMap<>();
-
-        try {
-            // Parse the input string as JSON
-            JSONObject jsonObject = new JSONObject(input);
-            Iterator<String> keys = jsonObject.keys();
-
-            // Populate the map with keys and values from the JSON object
-            while (keys.hasNext()) {
-                String key = keys.next();
-                map.put(key, jsonObject.getString(key));
+        int firstQuoteIndex = input.indexOf('"');
+        String result = input.substring(firstQuoteIndex);
+        result = result.replaceAll("}$", "");
+        result = result.replace("\"", "");
+        String[] keyValuePairs = result.split(",");
+        for (String pair : keyValuePairs) {
+            String[] entry = pair.split(":");
+            if (entry.length > 1) {
+                map.put(entry[0], entry[1]);
+            } else {
+                map.put(entry[0], "");
             }
-        } catch (Exception e) {
-            System.err.println("Failed to parse input string: " + e.getMessage());
         }
-
         return map;
     }
 }
