@@ -74,7 +74,8 @@ public class MagicLinkController {
 
         try {
             verificationCodeService.sendVerificationCode(email);
-            return ResponseEntity.ok("Verification code sent successfully.");
+            String s = "{\"success\":[{\"result\":\"Verification code sent successfully.\"}]}";
+            return ResponseEntity.ok(s);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send verification code: " + e.getMessage());
         }
