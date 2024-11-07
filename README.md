@@ -62,9 +62,11 @@ Before starting, ensure you have the following installed on your system:
 2. Configure the Emulator:
     - Use an emulator configured with **Medium Phone API 35** or any API level compatible with your project dependencies.
     - Ensure that the emulator can access `http://localhost:8080` by mapping localhost to `http://10.0.2.2:8080` in your network settings if required.
-3. Sync the Project with Gradle:
+3. **Sync the Project with Gradle**:
     - In Android Studio, click **File > Sync Project with Gradle Files** to make sure all dependencies are up-to-date.
-4. Run the frontend:
+4. **Fix SDK Location Error (if applicable)**:
+    - If the system shows an error about the SDK location being incorrect, go to **File > Project Structure** in Android Studio, and it should automatically detect and update the SDK location for you.
+5. Run the frontend:
     - Click the **Run** button in Android Studio or press `Shift+F10` to deploy the application to the emulator.
 
 ---
