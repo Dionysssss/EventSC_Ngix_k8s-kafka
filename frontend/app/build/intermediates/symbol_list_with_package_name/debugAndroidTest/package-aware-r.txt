@@ -1,3 +1,0 @@
-com.example.project2_login.test
-style WhiteBackgroundDialogTheme
-style WhiteBackgroundTheme
