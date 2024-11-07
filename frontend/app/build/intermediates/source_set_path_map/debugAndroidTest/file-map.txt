@@ -1,0 +1,5 @@
+com.example.project2_login.test.app-core-1.6.1-0 /Users/yunrongma/.gradle/caches/transforms-4/65d37f1a8a52b0c3b373fe6e5432c1b1/transformed/core-1.6.1/res
+com.example.project2_login.test.app-androidTest-1 /Users/yunrongma/Desktop/csci310/p2/csci310_project2/project2_login/app/build/generated/res/resValues/androidTest/debug
+com.example.project2_login.test.app-mergeDebugAndroidTestResources-2 /Users/yunrongma/Desktop/csci310/p2/csci310_project2/project2_login/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
+com.example.project2_login.test.app-mergeDebugAndroidTestResources-3 /Users/yunrongma/Desktop/csci310/p2/csci310_project2/project2_login/app/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
+com.example.project2_login.test.app-merged_res-4 /Users/yunrongma/Desktop/csci310/p2/csci310_project2/project2_login/app/build/intermediates/merged_res/debugAndroidTest

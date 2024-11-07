@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql:///event_sc?useSSL=false
     username: root
-    password: myr021108-
+    password: Wjz166605
 
   mail:
     host: smtp.gmail.com

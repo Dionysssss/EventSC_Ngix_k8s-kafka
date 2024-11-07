@@ -84,6 +84,7 @@ public class ValidationController {
     public ResponseEntity<?> getValidationStatus(@PathVariable int eventId, @PathVariable int userId) {
         try {
             String validationStatus = validationService.getValidationStatus(eventId, userId);
+            System.out.println("validationStatus: "+validationStatus);
             return ResponseEntity.ok(new ValidationStatusResponse(validationStatus));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(404, "Event or User not found"));
