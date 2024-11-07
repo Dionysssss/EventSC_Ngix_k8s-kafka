@@ -4,7 +4,6 @@ import com.steve.entity.User;
 import com.steve.entity.VerificationToken;
 import com.steve.mapper.UserMapper;
 import com.steve.mapper.VerificationTokenMapper;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -79,7 +78,7 @@ public class MagicLinkService {
 
         // Prepare and send the email
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom(emailSender);
+        mailMessage.setFrom("abiao.dickaon@gmail.com");
         mailMessage.setSubject("Your Verification Code");
         mailMessage.setTo(email);
         mailMessage.setText("Your verification code is: " + code);
@@ -106,9 +105,8 @@ public class MagicLinkService {
 //        return true;
 //    }
 
-    public boolean verifyCode(String code, int userId) {
-        LOGGER.info("Attempting to verify code: " + code + " for user ID: " + userId);
-
+    public boolean verifyCode(String code, String email) {
+        int userId = verificationTokenMapper.findUserByEmail(email);
         VerificationToken verificationToken = verificationTokenMapper.findByCodeAndUserId(code, userId);
         if (verificationToken == null) {
             LOGGER.warning("No verification token found for code: " + code);
@@ -120,30 +118,40 @@ public class MagicLinkService {
             return false;
         }
 
+        verificationTokenMapper.deleteExpiredTokens();
         LOGGER.info("Code verified successfully for user ID: " + verificationToken.getUserId());
         return true;
     }
 
-//    public static Map<String, String> convertStringToMap(String input) {
-//        Map<String, String> map = new HashMap<>();
-//
-//        try {
-//            // Parse the input string as JSON
-//            JSONObject jsonObject = new JSONObject(input);
-//            Iterator<String> keys = jsonObject.keys();
-//
-//            // Populate the map with keys and values from the JSON object
-//            while (keys.hasNext()) {
-//                String key = keys.next();
-//                map.put(key, jsonObject.getString(key));
-//            }
-//        } catch (Exception e) {
-//            System.err.println("Failed to parse input string: " + e.getMessage());
-//        }
-//
-//        return map;
-//    }
+    public boolean saveNewPassWord(String code, String email) {
 
+        int userId = verificationTokenMapper.findUserByEmail(email);
+        verificationTokenMapper.updatePassword(userId,code);
+        verificationTokenMapper.deleteVerificationToken(userId);
+        verificationTokenMapper.deleteExpiredTokens();
+        return true;
+    }
+/*
+    public static Map<String, String> convertStringToMap(String input) {
+        Map<String, String> map = new HashMap<>();
+
+        try {
+            // Parse the input string as JSON
+            JSONObject jsonObject = new JSONObject(input);
+            Iterator<String> keys = jsonObject.keys();
+
+            // Populate the map with keys and values from the JSON object
+            while (keys.hasNext()) {
+                String key = keys.next();
+                map.put(key, jsonObject.getString(key));
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to parse input string: " + e.getMessage());
+        }
+
+        return map;
+    }
+ */
     public static Map<String, String> convertStringToMap(String input) {
         Map<String, String> map = new HashMap<>();
         int firstQuoteIndex = input.indexOf('"');
@@ -156,7 +164,7 @@ public class MagicLinkService {
             if (entry.length > 1) {
                 map.put(entry[0], entry[1]);
             } else {
-                map.put(entry[0], "");
+                map.put(entry[0], ""); // 如果没有值，默认设置为空字符串
             }
         }
         return map;

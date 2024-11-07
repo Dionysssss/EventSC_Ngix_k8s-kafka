@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.util.Log;
+import android.util.Patterns;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +28,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import com.google.gson.Gson;
+
 public class LoginView extends AppCompatActivity {
 
     private EditText emailField;
@@ -35,11 +38,14 @@ public class LoginView extends AppCompatActivity {
     private Button registerButton;
     private Button forgotPasswordButton;
     private AuthApi authApi;
+    private String returnedEmail = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        returnedEmail = getIntent().getStringExtra("email");
 
         emailField = findViewById(R.id.email);
         passwordField = findViewById(R.id.password);
@@ -47,6 +53,10 @@ public class LoginView extends AppCompatActivity {
         registerButton = findViewById(R.id.register_button);
         forgotPasswordButton = findViewById(R.id.forgot_password_button);
         authApi = ApiClient.getAuthApi();
+
+        if(!(returnedEmail == null)){
+            emailField.setText(returnedEmail);
+        }
 
         forgotPasswordButton.setOnClickListener(v -> {
             String email = emailField.getText().toString().trim();
@@ -57,9 +67,9 @@ public class LoginView extends AppCompatActivity {
                     public void onResponse(Call<MagicLinkResponse> call, Response<MagicLinkResponse> response) {
                         if (response.isSuccessful()) {
                             Toast.makeText(LoginView.this, "Verification code sent to your email!", Toast.LENGTH_SHORT).show();
-//                            Intent intent = new Intent(LoginView.this, VerifyMagicLinkActivity.class);
-//                            intent.putExtra("email", email);
-//                            startActivity(intent);
+                            Intent intent = new Intent(LoginView.this, VerifyMagicLinkActivity.class);
+                            intent.putExtra("email", email);
+                            startActivity(intent);
                         } else {
                             Toast.makeText(LoginView.this, "Failed to send verification code", Toast.LENGTH_SHORT).show();
                         }
@@ -67,7 +77,7 @@ public class LoginView extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<MagicLinkResponse> call, Throwable t) {
-                        Toast.makeText(LoginView.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginView.this, "Error : " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
             } else {
@@ -104,41 +114,45 @@ public class LoginView extends AppCompatActivity {
         authApi.login(authRequest).enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    // Success response (200 OK)
-                    Toast.makeText(LoginView.this, "Login successful", Toast.LENGTH_SHORT).show();
-                    // Navigate to the next screen or handle login success as needed
-                    String userId = response.body().getUserId();
-                    Intent intent = new Intent(LoginView.this, MapViewActivity.class);
-                    intent.putExtra("userId", Integer.parseInt(userId)); // pass userId
-                    startActivity(intent);
+                if(isValidEmail(email)) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        // Success response (200 OK)
+                        Toast.makeText(LoginView.this, "Login successful", Toast.LENGTH_SHORT).show();
+                        // Navigate to the next screen or handle login success as needed
+                        String userId = response.body().getUserId();
+                        Intent intent = new Intent(LoginView.this, MapViewActivity.class);
+                        intent.putExtra("userId", Integer.parseInt(userId)); // pass userId
+                        startActivity(intent);
 
-                } else {
-                    try {
-                        // Handle error cases
-                        if (response.errorBody() != null) {
-                            String errorBody = response.errorBody().string();
-                            JSONObject errorJson = new JSONObject(errorBody);
+                    } else {
+                        try {
+                            // Handle error cases
+                            if (response.errorBody() != null) {
+                                String errorBody = response.errorBody().string();
+                                JSONObject errorJson = new JSONObject(errorBody);
 
-                            if (response.code() == 401) {
-                                // Incorrect username or password
-                                String errorMessage = errorJson.getJSONObject("error").getString("message");
-                                Toast.makeText(LoginView.this, errorMessage, Toast.LENGTH_SHORT).show();
-                            } else if (response.code() == 400) {
-                                // Missing or invalid fields
-                                String errorMessage = errorJson.getJSONObject("error").getString("message");
-                                Toast.makeText(LoginView.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                if (response.code() == 401) {
+                                    // Incorrect username or password
+                                    String errorMessage = errorJson.getJSONObject("error").getString("message");
+                                    Toast.makeText(LoginView.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 400) {
+                                    // Missing or invalid fields
+                                    String errorMessage = errorJson.getJSONObject("error").getString("message");
+                                    Toast.makeText(LoginView.this, errorMessage, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    // Generic error for other cases
+                                    Toast.makeText(LoginView.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
-                                // Generic error for other cases
-                                Toast.makeText(LoginView.this, "Login failed. Please try again.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginView.this, "Login failed. Unknown error.", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                    Toast.makeText(LoginView.this, "Login failed. Unknown error.", Toast.LENGTH_SHORT).show();
+                        } catch (IOException | JSONException e) {
+                            e.printStackTrace();
+                            Toast.makeText(LoginView.this, "Error processing login response.", Toast.LENGTH_SHORT).show();
                         }
-                    } catch (IOException | JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(LoginView.this, "Error processing login response.", Toast.LENGTH_SHORT).show();
                     }
+                } else {
+                    Toast.makeText(LoginView.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -156,22 +170,26 @@ public class LoginView extends AppCompatActivity {
         authApi.register(registerRequest).enqueue(new Callback<RegisterResponse>() {
             @Override
             public void onResponse(Call<RegisterResponse> call, Response<RegisterResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(LoginView.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                    // Navigate to login or home screen after registration
-                } else {
-                    Toast.makeText(LoginView.this, "Registration failed", Toast.LENGTH_SHORT).show();
-                    // Track HTTP status code and error
-                    int statusCode = response.code();
-                    String errorBody;
-                    try {
-                        errorBody = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        errorBody = "Error reading error body";
+                if(isValidEmail(email)) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Toast.makeText(LoginView.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        // Navigate to login or home screen after registration
+                    } else {
+                        Toast.makeText(LoginView.this, "Registration failed", Toast.LENGTH_SHORT).show();
+                        // Track HTTP status code and error
+                        int statusCode = response.code();
+                        String errorBody;
+                        try {
+                            errorBody = response.errorBody() != null ? response.errorBody().string() : "Unknown error";
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            errorBody = "Error reading error body";
+                        }
+                        Log.e("RegisterError", "Error " + statusCode + ": " + errorBody);
+                        Toast.makeText(LoginView.this, "Registration failed: " + errorBody, Toast.LENGTH_LONG).show();
                     }
-                    Log.e("RegisterError", "Error " + statusCode + ": " + errorBody);
-                    Toast.makeText(LoginView.this, "Registration failed: " + errorBody, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(LoginView.this, "Please enter a valid email address", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -181,4 +199,9 @@ public class LoginView extends AppCompatActivity {
             }
         });
     }
+
+    private boolean isValidEmail(String email) {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
 }

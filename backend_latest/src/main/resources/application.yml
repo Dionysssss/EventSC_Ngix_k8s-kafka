@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql:///event_sc?useSSL=false
+    username: root
+    password: myr021108-
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: abiao.dickaon@gmail.com
+    password: ysahavdfvavywylf
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+app:
+  magic-link:
+    base-url: http://10.0.2.2:8080

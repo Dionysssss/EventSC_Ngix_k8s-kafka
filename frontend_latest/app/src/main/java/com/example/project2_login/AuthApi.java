@@ -45,6 +45,9 @@ public interface AuthApi {
     @POST("/auth/verify-magic-link")
     Call<MagicLinkVerificationResponse> verifyMagicLink(@Body MagicLinkVerificationRequest request);
 
+    @POST("/auth/save-magic-link")
+    Call<MagicLinkVerificationResponse> saveMagicLink(@Body MagicLinkVerificationRequest request);
+
     // Retrieve all events
     @GET("/events")
     Call<List<ReceivedEvent>> getAllEvents();

@@ -43,6 +43,10 @@
 
         <activity android:name=".EventDetailsActivity" />
 
+        <activity android:name=".VerifyMagicLinkActivity" />
+
+        <activity android:name=".ResetPasswordActivity" />
+
         <!-- ModifyEventActivity declaration -->
         <activity android:name=".ModifyEventActivity" android:exported="true"/>
 

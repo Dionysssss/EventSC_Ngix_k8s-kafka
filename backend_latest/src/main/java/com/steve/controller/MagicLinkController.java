@@ -75,32 +75,47 @@ public class MagicLinkController {
         try {
             verificationCodeService.sendVerificationCode(email);
             String s = "{\"success\":[{\"result\":\"Verification code sent successfully.\"}]}";
-            return ResponseEntity.ok(s);
+            ResponseEntity<String> ok = ResponseEntity.ok(s);
+            return ok;
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to send verification code: " + e.getMessage());
         }
     }
 
     // Endpoint to verify the code and proceed with password reset
-    @GetMapping("/verify-magic-link")
+    @PostMapping("/verify-magic-link")
     public ResponseEntity<String> verifyCode(@RequestBody String request) {
         Map<String, String> map = convertStringToMap(request);
-        String code = map.get("code");
+        String code = map.get("verificationCode");
+        String email = map.get("email");
         int userId;
 
         try {
-            userId = Integer.parseInt(map.get("userId"));
-        } catch (NumberFormatException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid userId format.");
-        }
-
-        try {
-            boolean verified = verificationCodeService.verifyCode(code, userId);
+            boolean verified = verificationCodeService.verifyCode(code, email);
             if (verified) {
-                return ResponseEntity.ok("Verification successful. Proceed with password reset.");
+                String s = "{\"success\":[{\"result\":\"Verification code verify successfully.\"}]}";
+                ResponseEntity<String> ok = ResponseEntity.ok(s);
+                return ok;
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired verification code.");
             }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Verification failed: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/save-magic-link")
+    public ResponseEntity<String> newPassWord(@RequestBody String request) {
+        Map<String, String> map = convertStringToMap(request);
+        String code = map.get("verificationCode");
+        String email = map.get("email");
+        int userId;
+
+        try {
+            verificationCodeService.saveNewPassWord(code, email);
+            String s = "{\"success\":[{\"result\":\"Verification code verify successfully.\"}]}";
+            ResponseEntity<String> ok = ResponseEntity.ok(s);
+            return ok;
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Verification failed: " + e.getMessage());
         }

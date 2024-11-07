@@ -55,7 +55,8 @@ public class VerifyMagicLinkActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     // If verification is successful, proceed to the main activity or log in the user
                     Toast.makeText(VerifyMagicLinkActivity.this, "Verification successful. Logging in...", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(VerifyMagicLinkActivity.this, MapViewActivity.class);
+                    Intent intent = new Intent(VerifyMagicLinkActivity.this, ResetPasswordActivity.class);
+                    intent.putExtra("email", email);
                     startActivity(intent);
                     finish();
                 } else {
