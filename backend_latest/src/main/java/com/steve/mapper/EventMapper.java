@@ -24,4 +24,7 @@ public interface EventMapper {
     @Delete("DELETE FROM Event WHERE event_id = #{eventId}")
     int deleteEvent(int eventId);
 
+    @Delete("DELETE FROM Event")
+    int deleteAllEvents();
+
 }

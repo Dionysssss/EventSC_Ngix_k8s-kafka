@@ -3,6 +3,8 @@ package com.steve.mapper;
 import com.steve.entity.User;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface UserMapper {
 
@@ -16,8 +18,16 @@ public interface UserMapper {
     @Select("SELECT * FROM User WHERE email = #{email}")
     User findUserByEmail(String email);
 
+    @Select("SELECT * FROM User")
+    List<User> findAllUsers();
+
     @Update("UPDATE User SET password = #{password} WHERE user_id = #{userId}")
     void updatePassword(@Param("userId") int userId, @Param("password") String password);
 
+    @Delete("DELETE FROM User WHERE user_id = #{userId}")
+    void deleteUserById(int userId);
+
+    @Delete("DELETE FROM User")
+    void deleteAllUsers();
     // Additional database interaction methods can be added here
 }
