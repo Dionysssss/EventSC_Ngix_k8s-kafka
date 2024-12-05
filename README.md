@@ -197,8 +197,6 @@ Maven is required to build and run the backend. Follow the instructions below to
 
 ---
 
-<a name="improved-capabilities-since-project-2-4"></a>
-
 ### Improved Capabilities
 
 Here are all the improved capabilities since Project 2.4:
