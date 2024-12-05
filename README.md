@@ -14,6 +14,7 @@ This project is a full-stack application for managing events, allowing users to 
 6. [Troubleshooting](#troubleshooting)
 7. [Notes](#notes)
 8. [Maven Installation](#maven-installation)
+9. [Improved Capabilities since Project 2.4](#project-2.5)
 
 ---
 
@@ -193,6 +194,23 @@ Maven is required to build and run the backend. Follow the instructions below to
       mvn -version
       ```
     - You should see Maven's version information.
+
+### Improved Capabilities since Project 2.4
+
+1. **Update UI of Login Page**
+   - Redesigned the login page to align with USC's official design standards, enhancing user trust and professionalism.
+
+2. **Display Latitude/Longitude and Address on Create Event Page**
+   - Integrated a feature to display both latitude/longitude and the human-readable address on the event creation page for better location verification.
+
+3. **Display Address on Event Details Page**
+   - Updated the event details page to replace latitude/longitude with a readable address for improved clarity and usability.
+
+4. **Dynamic Address Update on Modify Event Page**
+   - Implemented real-time address updates during event modifications to provide users with confidence in the new event location.
+
+5. **Secure the Password Store in the Database**
+   - Secured password storage by implementing hashing using `PasswordEncoder`, ensuring sensitive user data is protected against unauthorized access.
 
 ---
 
