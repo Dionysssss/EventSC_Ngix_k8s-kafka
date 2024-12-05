@@ -37,10 +37,10 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
     private static final int EVENT_DETAILS_REQUEST_CODE = 1;
     private static final int CREATE_EVENT_REQUEST_CODE = 2;  // New request code for creating an event
 
-    private GoogleMap mMap;
+    public GoogleMap mMap;
     private List<Event> eventsList = new ArrayList<>();
     private Gson gson = new Gson();
-    private HashMap<Marker, Event> markerEventMap = new HashMap<>();
+    public HashMap<Marker, Event> markerEventMap = new HashMap<>();
 
     // Receiver class from backEnd
     private List<ReceivedEvent> eventList = new ArrayList<>();
@@ -137,7 +137,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         });
     }
 
-    private void addEventMarkers() {
+    public void addEventMarkers() {
         // Clear existing markers from the map and HashMap
         mMap.clear();
         markerEventMap.clear();
@@ -156,7 +156,7 @@ public class MapViewActivity extends FragmentActivity implements OnMapReadyCallb
         }
     }
 
-    private boolean onMarkerClick(Marker marker) {
+    public boolean onMarkerClick(Marker marker) {
         Event event = (Event) marker.getTag();
         if (event != null) {
             openEventDetailsActivity(event);

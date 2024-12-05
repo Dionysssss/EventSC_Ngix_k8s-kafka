@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,6 +24,8 @@ public class MagicLinkService {
     private final JavaMailSender mailSender;
     private final UserMapper userMapper;
     private final VerificationTokenMapper verificationTokenMapper;
+
+    final static private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Value("${app.magic-link.base-url}")
     private String baseUrl;
@@ -126,7 +129,8 @@ public class MagicLinkService {
     public boolean saveNewPassWord(String code, String email) {
 
         int userId = verificationTokenMapper.findUserByEmail(email);
-        verificationTokenMapper.updatePassword(userId,code);
+        String hashedPassword = passwordEncoder.encode(code);
+        verificationTokenMapper.updatePassword(userId,hashedPassword);
         verificationTokenMapper.deleteVerificationToken(userId);
         verificationTokenMapper.deleteExpiredTokens();
         return true;

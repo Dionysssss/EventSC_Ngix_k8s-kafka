@@ -3,7 +3,9 @@ package com.steve.mapper;
 import com.steve.entity.Comment;
 import com.steve.entity.Event;
 import com.steve.entity.User;
+import com.steve.utils.TestLogger;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -16,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(TestLogger.class)
 public class CommentMapperTest {
 
     @Autowired

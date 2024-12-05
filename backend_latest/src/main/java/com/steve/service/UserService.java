@@ -8,6 +8,7 @@ import com.steve.entity.User;
 import com.steve.mapper.SecurityAnswerMapper;
 import com.steve.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +20,7 @@ public class UserService {
     @Autowired
     private SecurityAnswerMapper securityAnswerMapper;
 
-    // private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+     final static private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
 //    public User registerUser(User user) {
@@ -36,8 +37,10 @@ public class UserService {
         // Hash password and save user
         User user = new User();
         user.setEmail(request.getEmail());
-        // user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setPassword(request.getPassword());
+        String hashedPassword = passwordEncoder.encode(request.getPassword());
+        user.setPassword(hashedPassword);
+        System.out.println(hashedPassword);
+//        user.setPassword(request.getPassword());
         userMapper.insertUser(user);
 
         // Save security answer
@@ -59,8 +62,8 @@ public class UserService {
         }
 
         // Update password if answer is correct
-        //String hashedPassword = passwordEncoder.encode(request.getNewPassword());
-        String hashedPassword = request.getNewPassword();
+        String hashedPassword = passwordEncoder.encode(request.getNewPassword());
+//        String hashedPassword = request.getNewPassword();
         userMapper.updatePassword(user.getUserId(), hashedPassword);
     }
 
@@ -72,7 +75,10 @@ public class UserService {
     public LoginResponse loginUser(LoginRequest loginRequest) {
         User user = userMapper.findUserByEmail(loginRequest.getEmail());
 
-        if (user == null || !user.getPassword().equals(loginRequest.getPassword())) {
+
+        // System.out.println(passwordEncoder.matches(loginRequest.getPassword(), user.getPassword()));
+
+        if (user == null || ! passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
             return null;
             // Invalid credentials
         }

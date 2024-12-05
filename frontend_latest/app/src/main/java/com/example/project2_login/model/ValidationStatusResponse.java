@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ValidationStatusResponse {
 
-    //@SerializedName("validation-status")
+    // @SerializedName("validation-status")
     private String validationStatus;
 
     public String getValidationStatus() {

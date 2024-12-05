@@ -27,6 +27,16 @@
         android:hint="Location: Not set"
         android:focusable="false" />
 
+    <!-- TextView to display the street address -->
+    <TextView
+        android:id="@+id/edit_event_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Address: Not available"
+        android:textSize="14sp"
+        android:textColor="@android:color/black" />
+
     <!-- MapView for selecting location -->
     <com.google.android.gms.maps.MapView
         android:id="@+id/edit_map"

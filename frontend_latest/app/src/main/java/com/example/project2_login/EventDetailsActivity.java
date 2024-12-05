@@ -20,6 +20,7 @@ import com.example.project2_login.model.CommentResponse;
 import com.example.project2_login.model.Event;
 import com.example.project2_login.model.EventRequest;
 import com.example.project2_login.model.EventResponse;
+import com.example.project2_login.model.GeocodingHelper;
 import com.example.project2_login.model.UserIdRequest;
 import com.example.project2_login.model.UserResponse;
 import com.example.project2_login.model.ValidationCountResponse;
@@ -123,7 +124,30 @@ public class EventDetailsActivity extends AppCompatActivity {
 
     private void displayEventDetails(Event event) {
         eventNameEditText.setText(event.getEventName());
-        eventLocationEditText.setText("Location: " + event.getEventLocation().getLatitude() + ", " + event.getEventLocation().getLongitude());
+
+        // Retrieve latitude and longitude
+        double latitude = event.getEventLocation().getLatitude();
+        double longitude = event.getEventLocation().getLongitude();
+
+        GeocodingHelper.fetchAddress(latitude, longitude, new GeocodingHelper.GeocodingCallback() {
+            @Override
+            public void onAddressFetched(String address) {
+                runOnUiThread(() -> eventLocationEditText.setText("Address: " + address));
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                runOnUiThread(() -> {
+                    Toast.makeText(EventDetailsActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    eventLocationEditText.setText("Location: " + latitude + ", " + longitude); // Fallback to coordinates
+                });
+            }
+        });
+
+        // Call the reverse geocoding function
+//        fetchAddressFromLatLong(latitude, longitude);
+//
+//        eventLocationEditText.setText("Location: " + event.getEventLocation().getLatitude() + ", " + event.getEventLocation().getLongitude());
         eventTimeEditText.setText("Date & Time: " + event.getEventDate() + " " + event.getEventTime());
         eventDescriptionEditText.setText(event.getEventDescription());
         fetchUserEmail(event.getEventCreatorId());

@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.project2_login.model.Event;
 import com.example.project2_login.model.EventRequest;
 import com.example.project2_login.model.EventResponse;
+import com.example.project2_login.model.GeocodingHelper;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,6 +38,7 @@ public class ModifyEventActivity extends AppCompatActivity implements OnMapReady
     private MapView editMap;
     private GoogleMap mMap;
     private int eventId;
+    private TextView editEventAddress;
 
     private Event currentEvent;
 
@@ -53,6 +56,7 @@ public class ModifyEventActivity extends AppCompatActivity implements OnMapReady
         editEventDate = findViewById(R.id.edit_event_date);
         editEventTime = findViewById(R.id.edit_event_time);
         saveEventButton = findViewById(R.id.save_event_button);
+        editEventAddress = findViewById(R.id.edit_event_address);
         editMap = findViewById(R.id.edit_map);
 
         // Initialize map
@@ -87,6 +91,10 @@ public class ModifyEventActivity extends AppCompatActivity implements OnMapReady
         editEventName.setText(event.getEventName());
         editEventDescription.setText(event.getEventDescription());
         editEventLocation.setText(event.getEventLocation().getLatitude() + ", " + event.getEventLocation().getLongitude());
+
+        // Fetch and display the address
+        fetchAddressFromLatLong(event.getEventLocation().getLatitude(), event.getEventLocation().getLongitude());
+
         editEventDate.setText(event.getEventDate());
         editEventTime.setText(event.getEventTime());
     }
@@ -140,8 +148,28 @@ public class ModifyEventActivity extends AppCompatActivity implements OnMapReady
             editEventLocation.setText(latLng.latitude + ", " + latLng.longitude);
             currentEvent.getEventLocation().setLatitude(latLng.latitude);
             currentEvent.getEventLocation().setLongitude(latLng.longitude);
+
+            fetchAddressFromLatLong(latLng.latitude, latLng.longitude);
         });
     }
+
+    private void fetchAddressFromLatLong(double latitude, double longitude) {
+        GeocodingHelper.fetchAddress(latitude, longitude, new GeocodingHelper.GeocodingCallback() {
+            @Override
+            public void onAddressFetched(String address) {
+                runOnUiThread(() -> editEventAddress.setText("Address: " + address));
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                runOnUiThread(() -> {
+                    Toast.makeText(ModifyEventActivity.this, "Error fetching address: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    editEventAddress.setText("Address: Not available");
+                });
+            }
+        });
+    }
+
 
     private void saveEventDetails() {
         // Update the currentEvent object with new details

@@ -3,7 +3,10 @@ package com.steve.mapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.steve.entity.Event;
 import com.steve.dto.IOEvent;
+import com.steve.entity.User;
+import com.steve.utils.TestLogger;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -15,15 +18,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ExtendWith(TestLogger.class)
 public class EventMapperTest {
 
     @Autowired
     private EventMapper eventMapper;
 
+    @Autowired
+    private UserMapper userMapper;
+
+    static User user = null;
     @BeforeEach
     void setUp() {
         // Clean up the database before each test
         eventMapper.deleteAllEvents();
+        userMapper.deleteAllUsers();
+
+        // Insert a test user
+        user = new User();
+        user.setEmail("testuser@example.com");
+        user.setPassword("password123");
+        userMapper.insertUser(user);
     }
 
     @AfterEach
@@ -40,7 +55,7 @@ public class EventMapperTest {
         event.setEventDescription("A description for the test event.");
         event.setEventDate(LocalDate.of(2024, 11, 25));
         event.setEventTime(LocalTime.of(10, 0));
-        event.setEventCreatorId(1);
+        event.setEventCreatorId(user.getUserId());
 
         // Set the location as a JSON object
         IOEvent.EventLocation location = new IOEvent.EventLocation();
@@ -59,7 +74,7 @@ public class EventMapperTest {
         assertEquals("A description for the test event.", insertedEvent.getEventDescription());
         assertEquals(LocalDate.of(2024, 11, 25), insertedEvent.getEventDate());
         assertEquals(LocalTime.of(10, 0), insertedEvent.getEventTime());
-        assertEquals(1, insertedEvent.getEventCreatorId());
+        assertEquals(user.getUserId(), insertedEvent.getEventCreatorId());
 
         // Verify the location
         IOEvent.EventLocation insertedLocation = insertedEvent.getEventLocationAsObject();
@@ -76,15 +91,21 @@ public class EventMapperTest {
         event1.setEventDescription("Description 1");
         event1.setEventDate(LocalDate.of(2024, 11, 25));
         event1.setEventTime(LocalTime.of(10, 0));
-        event1.setEventCreatorId(1);
+        event1.setEventCreatorId(user.getUserId());
         eventMapper.insertEvent(event1);
+
+        // Insert a test user
+        User user2 = new User();
+        user2.setEmail("testuser2@example.com");
+        user2.setPassword("password123");
+        userMapper.insertUser(user2);
 
         Event event2 = new Event();
         event2.setEventName("Event 2");
         event2.setEventDescription("Description 2");
         event2.setEventDate(LocalDate.of(2024, 11, 25));
         event2.setEventTime(LocalTime.of(12, 0));
-        event2.setEventCreatorId(2);
+        event2.setEventCreatorId(user2.getUserId());
         eventMapper.insertEvent(event2);
 
         // When
@@ -102,7 +123,7 @@ public class EventMapperTest {
         event.setEventDescription("A description for the test event.");
         event.setEventDate(LocalDate.of(2024, 11, 25));
         event.setEventTime(LocalTime.of(10, 0));
-        event.setEventCreatorId(1);
+        event.setEventCreatorId(user.getUserId());
         eventMapper.insertEvent(event);
 
         // When
@@ -121,7 +142,7 @@ public class EventMapperTest {
         event.setEventDescription("Old Description");
         event.setEventDate(LocalDate.of(2024, 11, 25));
         event.setEventTime(LocalTime.of(10, 0));
-        event.setEventCreatorId(1);
+        event.setEventCreatorId(user.getUserId());
         eventMapper.insertEvent(event);
 
         // Update details
@@ -146,7 +167,7 @@ public class EventMapperTest {
         event.setEventDescription("A description for the test event.");
         event.setEventDate(LocalDate.of(2024, 11, 25));
         event.setEventTime(LocalTime.of(10, 0));
-        event.setEventCreatorId(1);
+        event.setEventCreatorId(user.getUserId());
         eventMapper.insertEvent(event);
 
         // When
