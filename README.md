@@ -14,7 +14,7 @@ This project is a full-stack application for managing events, allowing users to 
 6. [Troubleshooting](#troubleshooting)
 7. [Notes](#notes)
 8. [Maven Installation](#maven-installation)
-9. [Improved Capabilities since Project 2.4](#improved-capabilities-since-project-2-4)
+9. [Improved Capabilities](#improved-capabilities)
 
 ---
 
@@ -195,8 +195,13 @@ Maven is required to build and run the backend. Follow the instructions below to
       ```
     - You should see Maven's version information.
 
-### Improved Capabilities since Project 2.4
+---
 
+<a name="improved-capabilities-since-project-2-4"></a>
+
+### Improved Capabilities
+
+Here are all the improved capabilities since Project 2.4:
 1. **Update UI of Login Page**
    - Redesigned the login page to align with USC's official design standards, enhancing user trust and professionalism.
 
