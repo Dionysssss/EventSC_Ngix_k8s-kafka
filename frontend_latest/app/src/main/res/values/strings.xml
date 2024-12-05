@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">project2_login</string>
+    <!-- Add these new strings for event creation form -->
+    <string name="event_name">Event Name</string>
+    <string name="event_description">Event Description</string>
+    <string name="event_date_time_hint">Event Date &amp; Time (YYYY-MM-DD HH:MM)</string>
+
+</resources>
