@@ -14,7 +14,7 @@ This project is a full-stack application for managing events, allowing users to 
 6. [Troubleshooting](#troubleshooting)
 7. [Notes](#notes)
 8. [Maven Installation](#maven-installation)
-9. [Improved Capabilities since Project 2.4](#project-2.5)
+9. [Improved Capabilities since Project 2.4](#improved-capabilities-since-project-2-4)
 
 ---
 
