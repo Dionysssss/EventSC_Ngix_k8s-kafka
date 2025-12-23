@@ -250,4 +250,10 @@ docker run -d --name eventsc-backend \
 
 如果数据库在宿主机（如 Docker for Mac），将 `<mysql-host>` 换成 `host.docker.internal`；若在云端/RDS，则填入对应内网或公网地址并确保安全组/防火墙放行 3306。
 
+---
+
+## API 文档
+
+完整接口文档（Google Drive）：https://drive.google.com/file/d/14ihoGP9e723Y91xT08_ZNHfIZ244yvrk/view?usp=sharing
+
 This project should now be fully set up and ready to use. Enjoy managing your events with Event SC!
