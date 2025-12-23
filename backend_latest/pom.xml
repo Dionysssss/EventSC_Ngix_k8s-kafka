@@ -94,5 +94,12 @@
   </dependencies>
   <build>
     <finalName>backend</finalName>
+    <plugins>
+      <!-- Make the WAR executable via java -jar -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
   </build>
 </project>
