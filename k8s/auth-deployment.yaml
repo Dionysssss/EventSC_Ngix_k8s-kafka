@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: your-registry/auth-service:latest
+          image: lancexie2214/auth-service:latest
           ports:
             - containerPort: 8081
           env:

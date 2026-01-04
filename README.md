@@ -19,7 +19,7 @@ This project is a full-stack application for managing events, allowing users to 
 
 ---
 
-### Prerequisites
+name### Prerequisites
 
 Before starting, ensure you have the following installed on your system:
 
@@ -199,6 +199,38 @@ Maven is required to build and run the backend. Follow the instructions below to
      ```bash
      source ~/.zshrc   # or source ~/.bash_profile
      ```
+
+---
+
+## Kubernetes (local, Docker Desktop)
+
+Deploy to the built-in Docker Desktop Kubernetes and expose via Ingress:
+
+1. Prereqs:
+   - Docker Desktop Kubernetes enabled; context `docker-desktop`.
+   - MySQL on the host, database `event_sc`, user `root`/`Wjz166605`, host port 3306 reachable.
+2. Config (samples provided):
+   - `k8s/config-secrets-example.yaml` uses `host.docker.internal` to reach host MySQL. Replace `jwt-secret.secret` with your own value if needed.
+3. Deploy:
+   ```bash
+   kubectl apply -f k8s/namespace.yaml
+   kubectl apply -f k8s/config-secrets-example.yaml
+   kubectl apply -f k8s/auth-deployment.yaml
+   kubectl apply -f k8s/event-deployment.yaml
+   kubectl apply -f k8s/ingress.yaml
+   ```
+4. Host mapping:
+   - Add to `/etc/hosts`: `127.0.0.1 eventsc.local` (sudo required).
+   - Verify ingress controller is running: `kubectl get pods -n ingress-nginx`.
+5. Access:
+   - `http://eventsc.local/auth/login` (auth-service)
+   - `http://eventsc.local/events` (event-service; default returns upcoming events only; add `includeOutdated=yes` to see all)
+   - For protected endpoints add header `Authorization: Bearer <token>`.
+6. Optional (without Ingress): use port-forward for local dev
+   ```bash
+   kubectl -n eventsc port-forward svc/auth-service 8081:8081
+   kubectl -n eventsc port-forward svc/event-service 8080:8080
+   ```
 3. **Verify Maven Installation**:
 
    - In Terminal, run:

@@ -3,9 +3,12 @@ kind: Ingress
 metadata:
   name: eventsc-ingress
   namespace: eventsc
+  annotations:
+    kubernetes.io/ingress.class: nginx
 spec:
+  ingressClassName: nginx
   rules:
-    - host: eventsc.local
+    - host: eventsc.test
       http:
         paths:
           - path: /auth
