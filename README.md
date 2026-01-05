@@ -289,3 +289,7 @@ docker run -d --name eventsc-backend \
 完整接口文档（Google Drive）：https://drive.google.com/file/d/14ihoGP9e723Y91xT08_ZNHfIZ244yvrk/view?usp=sharing
 
 This project should now be fully set up and ready to use. Enjoy managing your events with Event SC!
+
+---
+
+Project created by Steve Wang and Lance Xie.

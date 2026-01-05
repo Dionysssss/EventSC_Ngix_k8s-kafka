@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: event-service
-          image: lancexie2214/event-service:latest
+          image: docker.io/lancexie2214/event-service:latest
           ports:
             - containerPort: 8080
           env:

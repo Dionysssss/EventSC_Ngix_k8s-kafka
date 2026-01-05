@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: lancexie2214/auth-service:latest
+          image: docker.io/lancexie2214/auth-service:latest
           ports:
             - containerPort: 8081
           env:
